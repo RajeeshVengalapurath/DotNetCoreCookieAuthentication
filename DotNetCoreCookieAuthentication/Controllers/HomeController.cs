@@ -11,6 +11,12 @@ namespace DotNetCoreCookieAuthentication.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IAuthorizationService _authorizationService;
+
+        public HomeController(IAuthorizationService authorizationService)
+        {
+            _authorizationService = authorizationService;
+        }
         public IActionResult Index()
         {
             return View();
@@ -48,6 +54,22 @@ namespace DotNetCoreCookieAuthentication.Controllers
             HttpContext.SignInAsync(claimsPrincipal);
 
             return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> PartialAuthorizationCheck()
+        {
+            //Check View
+            return View();
+        }
+        public async Task<IActionResult> PartialAuthorizationCheck2()
+        {
+            if ((await _authorizationService.AuthorizeAsync(User, "PolicyA")).Succeeded)
+            {
+                //change model
+            }
+
+            //if (User.Identity.IsAuthenticated) { }
+
+            return View();
         }
     }
 }

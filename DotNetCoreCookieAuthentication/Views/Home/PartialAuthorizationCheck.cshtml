@@ -1,0 +1,17 @@
+﻿<h1>Partial Authorization Check</h1>
+
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService authorizationService
+
+@if ((await authorizationService.AuthorizeAsync(User, "PolicyA")).Succeeded)
+{
+    <h2>User has policy: PolicyA</h2>
+}
+else
+{
+    <h2>User does not have policy: PolicyA</h2>
+}
+
+@* Can check the following also
+    @User.Claims. //check claims
+    @User.Identity.IsAuthenticated*@
